@@ -86,6 +86,11 @@ public class StanfordPOSTagger extends InternalModule {
         this.model_resource = this.getClass().getResource("french.tagger").toString();
     }
 
+    /**
+     *  Module startup method which is loading the StanfordPOSTagger model in the resoure
+     *  "french.tagger" for now
+     *
+     */
 	public void startup()
         throws Exception
     {
@@ -93,6 +98,11 @@ public class StanfordPOSTagger extends InternalModule {
         tagger = new MaxentTagger(model_resource);
     }
 
+
+    /**
+     *  Achieve the tagging
+     *
+     */
     @SuppressWarnings("unchecked")
     public MaryData process(MaryData d)
         throws Exception
