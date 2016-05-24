@@ -1,7 +1,13 @@
-apply plugin: 'groovy'
-apply plugin: 'java'
+plugins {
+    id 'java'
+    id 'groovy'
+    id "com.jfrog.bintray" version "1.6"
+
+    id "maven-publish"
+}
 
 
+def maryttsVersion = '5.2-SNAPSHOT'
 
 repositories {
     jcenter()
@@ -16,10 +22,15 @@ repositories {
 dependencies {
     compile group: "org.codehaus.groovy", name:"groovy-all", version:"2.2"
     compile group: "edu.stanford.nlp", name:"stanford-corenlp", version:"3.6.0"
-    compile group: 'de.dfki.mary', name: "marytts-lang-fr", version: "5.2-SNAPSHOT"
-    runtime group: 'de.dfki.mary', name: "marytts-runtime", version: "5.2-SNAPSHOT"
+    compile group: 'de.dfki.mary', name: "marytts-lang-fr", version: maryttsVersion
+    runtime group: 'de.dfki.mary', name: "marytts-runtime", version: maryttsVersion
+    testCompile group: 'org.testng', name: 'testng', version: '6.8.13'
 }
 
+
+test {
+    useTestNG()
+}
 
 
 
@@ -31,4 +42,39 @@ task server (type:JavaExec, group: 'Runtime', description: 'Start the MaryTTS se
     classpath configurations.compile
     systemProperty "mary.base", "$buildDir"
     main "marytts.server.Mary"
+}
+
+
+
+def cur_version = '0.1'
+
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            from components.java
+            groupId "de.dfki.mary"
+            artifactId 'marytts-lang-fr-extended'
+            version cur_version
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    pkg {
+        repo = 'maven'
+        name = 'marytts-hts'
+        licenses = ["GPL-3.0"]
+        vcsUrl = 'https://github.com/seblemaguer/marytts-lang-fr-extended'
+
+        publish = true
+        publications = ['MyPublication']
+
+        //Optional version descriptor
+        version {
+            name = cur_version
+            vcsTag = cur_version
+        }
+    }
 }
