@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<maryxml xmlns="http://mary.dfki.de/2002/MaryXML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="0.5" xml:lang="fr">
+<p>
+<s>
+<t pos="I">
+Bonjour
+</t>
+<t pos="PUNC">
+,
+</t>
+<t pos="ADVWH">
+comment
+</t>
+<t pos="V">
+allez
+</t>
+<t pos="PRO">
+vous
+</t>
+<t pos="PUNC">
+?
+</t>
+</s>
+</p>
+</maryxml>
