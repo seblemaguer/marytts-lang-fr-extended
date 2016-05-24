@@ -1,0 +1,34 @@
+apply plugin: 'groovy'
+apply plugin: 'java'
+
+
+
+repositories {
+    jcenter()
+    maven {
+        url 'http://oss.jfrog.org/artifactory/repo'
+    }
+    maven {
+        url "http://dl.bintray.com/slemaguer/maven"
+    }
+}
+
+dependencies {
+    compile group: "org.codehaus.groovy", name:"groovy-all", version:"2.2"
+    compile group: "edu.stanford.nlp", name:"stanford-corenlp", version:"3.6.0"
+    compile group: 'de.dfki.mary', name: "marytts-lang-fr", version: "5.2-SNAPSHOT"
+    runtime group: 'de.dfki.mary', name: "marytts-runtime", version: "5.2-SNAPSHOT"
+}
+
+
+
+
+task server (type:JavaExec, group: 'Runtime', description: 'Start the MaryTTS server') {
+    dependsOn "build"
+    jvmArgs "-showversion", "-Xms40m", "-Xmx1g"
+    classpath = sourceSets.main.runtimeClasspath
+    classpath configurations.runtime
+    classpath configurations.compile
+    systemProperty "mary.base", "$buildDir"
+    main "marytts.server.Mary"
+}
